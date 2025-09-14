@@ -56,7 +56,4 @@ jobs:
           name: ${{ env.RELEASE_NAME }}
           tag: ${{ env.TAG_NAME }}
           artifactErrorsFailBuild: true
-          artifacts: ./sr-lists/*.list
-          draft: true
-          
-      
+          artifacts: ./sr-lists/*.list      
