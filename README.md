@@ -14,9 +14,9 @@ ASN: https://github.com/runetfreedom/russia-blocked-geoip/releases/latest/downlo
 ```
 # Example Rules for Shadowrocket
 [Rule]
-RULE-SET,https://github.com/anon7652/sr-ru/rules/releases/latest/download/geosite-refilter.list,PROXY
-RULE-SET,https://github.com/anon7652/sr-ru/rules/releases/latest/download/geosite-ru-blocked.list,PROXY
-RULE-SET,https://github.com/anon7652/sr-ru/rules/releases/latest/download/geosite-ru-available-only-inside.list,DIRECT
+RULE-SET,https://github.com/anon7652/sr-ru-rules/releases/latest/download/geosite-refilter.list,PROXY
+RULE-SET,https://github.com/anon7652/sr-ru-rules/releases/latest/download/geosite-ru-blocked.list,PROXY
+RULE-SET,https://github.com/anon7652/sr-ru-rules/releases/latest/download/geosite-ru-available-only-inside.list,DIRECT
 
 GEOIP,RU,DIRECT
 GEOIP,RE-FILTER,PROXY
