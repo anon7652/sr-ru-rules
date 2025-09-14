@@ -5,6 +5,9 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+env:
+  GH_TOKEN: ${{ github.token }}
+
 jobs:
   # This workflow contains a single job called "build"
   Make-New-Release:
