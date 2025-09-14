@@ -2,8 +2,14 @@ name: Publish New Release
 
 # Controls when the workflow will run
 on:
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+  schedule:
+    - cron: "30 3,9,15,21 * * *"
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - "**/README.md"
 
 env:
   GH_TOKEN: ${{ github.token }}
