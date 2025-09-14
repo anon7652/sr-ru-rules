@@ -1,0 +1,57 @@
+name: Publish New Release 
+
+# Controls when the workflow will run
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  # This workflow contains a single job called "build"
+  Make-New-Release:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set variables
+        run: |
+          echo "RELEASE_NAME=Released on $(date +%Y%m%d%H%M)" >> $GITHUB_ENV
+          echo "TAG_NAME=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
+        shell: bash
+  
+      - name: Pull latest releases
+        run: |
+          gh release download -R SagerNet/sing-box -p '*-linux-amd64.tar.gz'
+          gh release download -R runetfreedom/russia-v2ray-rules-dat -p 'sing-box.zip'
+
+          tar zxf *-linux-amd64.tar.gz --strip-components=1
+          unzip ./sing-box.zip
+
+          mkdir -p ./sing-box-json/
+          mkdir -p ./sr-lists/
+
+      - name: Decompile sing-box ruleset to JSON
+        run: |
+          srs_files=$(ls rule-set-geoip/geoip-ru*.srs rule-set-geosite/geosite-ru-*.srs rule-set-geosite/geosite-refilter.srs)
+          for srs in $srs_files; do
+              echo "Decompiling $srs"
+              name=$(basename -s .srs $srs)
+              ./sing-box rule-set decompile $srs -o ./sing-box-json/${name}.json
+          done
+
+      - name: Setup Python
+        uses: actions/setup-python@v6.0.0
+
+      - name: Convert sing-box to Shadowrocket format
+        run: python bin/signbox2shadowrocket.py
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1.20.0
+        with:
+          artifactErrorsFailBuild: true
+          artifacts: ./sr-lists/*.list
+          draft: true
+          
+      
